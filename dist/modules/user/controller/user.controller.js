@@ -17,80 +17,50 @@ const common_1 = require("@nestjs/common");
 const response_formatter_1 = require("../../../infrastructure/utils/response_formatter/response-formatter");
 const create_user_dto_1 = require("../dto/create-user.dto");
 const filter_user_dto_1 = require("../dto/filter-user.dto");
-const update_user_dto_1 = require("../dto/update-user-dto");
 const user_usecase_1 = require("../usecase/user.usecase");
 let UserController = class UserController {
     constructor(userUsecase) {
         this.userUsecase = userUsecase;
     }
-    async create(createUserDto) {
+    async create(createUserDto, res) {
         const user = await this.userUsecase.create(createUserDto);
-        return (0, response_formatter_1.formatResponse)(user, 'Success');
+        return (0, response_formatter_1.formatResponse)(res, user, 'Success');
     }
-    async findAll() {
-        const users = await this.userUsecase.findAll();
-        return (0, response_formatter_1.formatResponse)(users, 'Success');
+    async fetchAll(res) {
+        const users = await this.userUsecase.fetchAll();
+        return (0, response_formatter_1.formatResponse)(res, users, 'Success');
     }
-    async findPaginate(req) {
-        const users = await this.userUsecase.findPaginate(req);
-        return (0, response_formatter_1.formatResponse)(users, 'Success');
-    }
-    async findOne(id) {
-        const user = await this.userUsecase.findOne(+id);
-        return (0, response_formatter_1.formatResponse)(user, 'Success');
-    }
-    update(id, updateUserDto) {
-        return this.userUsecase.update(+id, updateUserDto);
-    }
-    remove(id) {
-        return this.userUsecase.remove(+id);
+    async fetchPaginate(req, res) {
+        const users = await this.userUsecase.fetchPaginate(req);
+        return (0, response_formatter_1.formatResponse)(res, users, 'Success');
     }
 };
 exports.UserController = UserController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('all'),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "findAll", null);
+], UserController.prototype, "fetchAll", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [filter_user_dto_1.FilterUserDto]),
+    __metadata("design:paramtypes", [filter_user_dto_1.FilterUserDto, Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "findPaginate", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "remove", null);
+], UserController.prototype, "fetchPaginate", null);
 exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)('users'),
+    (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_usecase_1.UserUsecase])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

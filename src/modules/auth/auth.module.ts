@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Company } from 'src/domain/entity/company.entity';
 import { UserCredential } from 'src/domain/entity/user-credential.entity';
 import { User } from 'src/domain/entity/user.entity';
 import { JwtConfig } from 'src/infrastructure/jwt/jwt.config';
 import { FileSystemStorageAdapter } from 'src/infrastructure/utils/storage/file-system-storage.adapter';
 import { StorageService } from 'src/infrastructure/utils/storage/storage.service';
+import { CompanyRepository } from '../company/repository/company.repository';
 import { UserCredentialRepository } from '../user/repository/user-credential.repository';
 import { UserRepository } from '../user/repository/user.repository';
 import { LoginController } from './controller/login.controller';
@@ -15,7 +17,7 @@ import { RegisterUsecase } from './usecase/register.usecase';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, UserCredential]),
+    TypeOrmModule.forFeature([User, UserCredential, Company]),
     JwtModule.register({
       global: true,
       secret: JwtConfig.SECRET_KEY,
@@ -26,6 +28,7 @@ import { RegisterUsecase } from './usecase/register.usecase';
   providers: [
     UserRepository,
     UserCredentialRepository,
+    CompanyRepository,
     LoginUsecase,
     RegisterUsecase,
     {

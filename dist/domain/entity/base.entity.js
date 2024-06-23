@@ -11,7 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseEntity = void 0;
 const typeorm_1 = require("typeorm");
+const ulid_1 = require("ulid");
 class BaseEntity {
+    generateUlid() {
+        if (!this.uid || this.uid.trim() === '') {
+            this.uid = (0, ulid_1.ulid)();
+        }
+    }
 }
 exports.BaseEntity = BaseEntity;
 __decorate([
@@ -20,19 +26,27 @@ __decorate([
 ], BaseEntity.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Index)({ unique: true }),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], BaseEntity.prototype, "uid", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
-], BaseEntity.prototype, "createdAt", void 0);
+], BaseEntity.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', nullable: true }),
     __metadata("design:type", Date)
-], BaseEntity.prototype, "updatedAt", void 0);
+], BaseEntity.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.DeleteDateColumn)({ name: 'deleted_at' }),
+    (0, typeorm_1.DeleteDateColumn)({ name: 'deleted_at', nullable: true }),
     __metadata("design:type", Date)
-], BaseEntity.prototype, "deletedAt", void 0);
+], BaseEntity.prototype, "deleted_at", void 0);
+__decorate([
+    (0, typeorm_1.BeforeInsert)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], BaseEntity.prototype, "generateUlid", null);
 //# sourceMappingURL=base.entity.js.map

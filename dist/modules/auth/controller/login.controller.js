@@ -14,21 +14,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 const common_1 = require("@nestjs/common");
-const login_usecase_1 = require("../usecase/login.usecase");
-const login_dto_1 = require("../dto/login.dto");
 const response_formatter_1 = require("../../../infrastructure/utils/response_formatter/response-formatter");
-const common_2 = require("@nestjs/common");
+const login_dto_1 = require("../dto/login.dto");
+const login_usecase_1 = require("../usecase/login.usecase");
 let LoginController = class LoginController {
     constructor(loginUsecase) {
         this.loginUsecase = loginUsecase;
     }
-    async login(loginDto) {
+    async login(loginDto, res) {
         try {
             const login = await this.loginUsecase.login(loginDto);
-            return (0, response_formatter_1.formatResponse)(login, 'Success');
+            return (0, response_formatter_1.formatResponse)(res, login, 'Success');
         }
         catch (err) {
-            throw (0, response_formatter_1.formatResponse)(null, err.message, common_2.HttpStatus.UNAUTHORIZED);
+            return (0, response_formatter_1.formatResponse)(res, null, err.message, common_1.HttpStatus.UNAUTHORIZED);
         }
     }
 };
@@ -36,8 +35,9 @@ exports.LoginController = LoginController;
 __decorate([
     (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], LoginController.prototype, "login", null);
 exports.LoginController = LoginController = __decorate([

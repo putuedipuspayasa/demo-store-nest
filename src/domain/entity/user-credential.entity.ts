@@ -3,7 +3,7 @@ import { BaseEntity } from './base.entity';
 
 @Entity('user_credentials')
 export class UserCredential extends BaseEntity {
-  @Column()
+  @Column({ type: 'varchar' })
   user_uid: string;
 
   @Column()

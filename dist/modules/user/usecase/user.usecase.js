@@ -71,20 +71,20 @@ let UserUsecase = class UserUsecase {
             await queryRunner.release();
         }
     }
-    findAll() {
+    fetchAll() {
         return this.userRepository.find();
     }
-    findOne(id) {
+    get(id) {
         return this.userRepository.findOneById(id);
     }
-    findPaginate(req) {
-        return this.userRepository.findPaginate(req);
+    fetchPaginate(req) {
+        return this.userRepository.fetchPaginate(req);
     }
     async update(id, updateUserDto) {
         await this.userRepository.update(id, updateUserDto);
-        return this.findOne(id);
+        return this.get(id);
     }
-    async remove(id) {
+    async delete(id) {
         await this.userRepository.delete(id);
     }
 };

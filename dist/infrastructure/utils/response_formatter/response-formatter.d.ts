@@ -1,6 +1,8 @@
+import { Response } from 'express';
 export interface ResponseFormat<T> {
-    statusCode: number;
+    code: number;
     message: string;
     data: T | null;
+    errors?: string[];
 }
-export declare function formatResponse<T>(data: T, message: string, statusCode?: number): ResponseFormat<T>;
+export declare function formatResponse<T>(res: Response, data: T, message: string, code?: number, errors?: string[]): ResponseFormat<T>;

@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateUserDto {
-  uid: string;
+  uid?: string;
 
   @IsNotEmpty()
   name: string;

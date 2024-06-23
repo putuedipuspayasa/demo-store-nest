@@ -19,10 +19,7 @@ let UserRepository = class UserRepository extends typeorm_1.Repository {
         super(user_entity_1.User, dataSource.createEntityManager());
         this.dataSource = dataSource;
     }
-    async findByFilter(filter) {
-        return this.filter(filter).getOne();
-    }
-    async findPaginate(req) {
+    async fetchPaginate(req) {
         if (req.page === undefined || req.page <= 0) {
             req.page = 1;
         }
@@ -53,6 +50,9 @@ let UserRepository = class UserRepository extends typeorm_1.Repository {
     }
     filter(filter) {
         const queryBuilder = this.createQueryBuilder('users');
+        if (filter.id) {
+            queryBuilder.andWhere('users.id = :id', { id: filter.id });
+        }
         if (filter.uid) {
             queryBuilder.andWhere('users.uid = :uid', { uid: filter.uid });
         }

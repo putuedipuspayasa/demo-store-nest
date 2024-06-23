@@ -16,7 +16,7 @@ let UserCredential = class UserCredential extends base_entity_1.BaseEntity {
 };
 exports.UserCredential = UserCredential;
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
 ], UserCredential.prototype, "user_uid", void 0);
 __decorate([

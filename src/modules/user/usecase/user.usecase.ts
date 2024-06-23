@@ -77,24 +77,24 @@ export class UserUsecase {
     }
   }
 
-  findAll(): Promise<User[]> {
+  fetchAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
+  get(id: number): Promise<User> {
     return this.userRepository.findOneById(id);
   }
 
-  findPaginate(req: FilterUserDto) {
-    return this.userRepository.findPaginate(req);
+  fetchPaginate(req: FilterUserDto) {
+    return this.userRepository.fetchPaginate(req);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     await this.userRepository.update(id, updateUserDto);
-    return this.findOne(id);
+    return this.get(id);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
 }

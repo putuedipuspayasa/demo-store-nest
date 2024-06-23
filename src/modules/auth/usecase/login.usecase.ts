@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { JwtConfig } from 'src/infrastructure/jwt/jwt.config';
 import { UserCredentialRepository } from 'src/modules/user/repository/user-credential.repository';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
 import { LoginDto } from '../dto/login.dto';
 import { LoginResponse } from '../response/login.response';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { JwtConfig } from 'src/infrastructure/jwt/jwt.config';
 
 @Injectable()
 export class LoginUsecase {
@@ -31,7 +31,6 @@ export class LoginUsecase {
       throw new Error('Invalid username or password');
     }
 
-    // throw new Error('valid');
     const isPasswordValid = await bcrypt.compare(
       req.password,
       userPassword.value,
@@ -47,9 +46,9 @@ export class LoginUsecase {
     });
 
     return {
-      token: accessToken,
-      type: JwtConfig.TOKEN_TYPE,
-      expire: JwtConfig.EXPIRE_IN,
+      access_token: accessToken,
+      token_type: JwtConfig.TOKEN_TYPE,
+      expires_in: JwtConfig.EXPIRE_IN,
       user: user,
     };
   }

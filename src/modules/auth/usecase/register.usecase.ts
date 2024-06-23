@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { UserCredentialType } from 'src/domain/constants/user-credential';
+import { Company } from 'src/domain/entity/company.entity';
 import { UserCredential } from 'src/domain/entity/user-credential.entity';
 import { User } from 'src/domain/entity/user.entity';
 import { JwtConfig } from 'src/infrastructure/jwt/jwt.config';
-import { generateSerialNumberWithTime } from 'src/infrastructure/utils/serial_number/serial-number-generator';
 import { StorageService } from 'src/infrastructure/utils/storage/storage.service';
+import { CompanyRepository } from 'src/modules/company/repository/company.repository';
 import { UserCredentialRepository } from 'src/modules/user/repository/user-credential.repository';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
 import { DataSource } from 'typeorm';
-import { ulid } from 'ulid';
 import { RegisterDto } from '../dto/register.dto';
 
 @Injectable()
@@ -19,6 +19,7 @@ export class RegisterUsecase {
     private userCredentialRepository: UserCredentialRepository,
     private dataSource: DataSource,
     private readonly storageService: StorageService,
+    private companyRepository: CompanyRepository,
   ) {}
 
   private get userCounter(): number {
@@ -47,21 +48,33 @@ export class RegisterUsecase {
         JwtConfig.SALT_ROUNDS,
       );
 
+      // const userCode = generateSerialNumberWithTime('USR', ++this.userCounter);
       const user = queryRunner.manager.create(User, {
-        uid: generateSerialNumberWithTime('USR', ++this.userCounter),
         name: req.name,
+        username: email,
         email: email,
         phone: req.phone,
       });
+
+      if (req.create_company) {
+        const company = await queryRunner.manager.create(Company, {
+          name: req.name,
+        });
+
+        const storeCompany = await queryRunner.manager.save(company);
+
+        user.company_uid = storeCompany.uid;
+      }
+
       const storeUser = await queryRunner.manager.save(user);
 
       const userCred = queryRunner.manager.create(UserCredential, {
-        uid: ulid(),
         user_uid: storeUser.uid,
         type: UserCredentialType.PASSWORD,
         value: hashedPassword,
       });
       await queryRunner.manager.save(userCred);
+
       await queryRunner.commitTransaction();
       return storeUser;
     } catch (err: any) {

@@ -13,4 +13,6 @@ export class RegisterDto {
 
   @IsNotEmpty()
   password: string;
+
+  create_company: boolean;
 }

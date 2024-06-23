@@ -1,5 +1,5 @@
 export declare class CreateUserDto {
-    uid: string;
+    uid?: string;
     name: string;
     email: string;
     phone: string;

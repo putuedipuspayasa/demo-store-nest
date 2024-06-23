@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginUsecase = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcrypt");
+const jwt_config_1 = require("../../../infrastructure/jwt/jwt.config");
 const user_credential_repository_1 = require("../../user/repository/user-credential.repository");
 const user_repository_1 = require("../../user/repository/user.repository");
-const bcrypt = require("bcrypt");
-const jwt_1 = require("@nestjs/jwt");
-const jwt_config_1 = require("../../../infrastructure/jwt/jwt.config");
 let LoginUsecase = class LoginUsecase {
     constructor(userRepository, userCredentialRepository, jwtService) {
         this.userRepository = userRepository;
@@ -41,9 +41,9 @@ let LoginUsecase = class LoginUsecase {
             username: user.email,
         });
         return {
-            token: accessToken,
-            type: jwt_config_1.JwtConfig.TOKEN_TYPE,
-            expire: jwt_config_1.JwtConfig.EXPIRE_IN,
+            access_token: accessToken,
+            token_type: jwt_config_1.JwtConfig.TOKEN_TYPE,
+            expires_in: jwt_config_1.JwtConfig.EXPIRE_IN,
             user: user,
         };
     }

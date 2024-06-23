@@ -15,9 +15,9 @@ export declare class UserUsecase {
     private get userCounter();
     private set userCounter(value);
     create(createUserDto: CreateUserDto): Promise<User>;
-    findAll(): Promise<User[]>;
-    findOne(id: number): Promise<User>;
-    findPaginate(req: FilterUserDto): Promise<import("nestjs-typeorm-paginate").Pagination<User, import("nestjs-typeorm-paginate").IPaginationMeta>>;
+    fetchAll(): Promise<User[]>;
+    get(id: number): Promise<User>;
+    fetchPaginate(req: FilterUserDto): Promise<import("nestjs-typeorm-paginate").Pagination<User, import("nestjs-typeorm-paginate").IPaginationMeta>>;
     update(id: number, updateUserDto: UpdateUserDto): Promise<User>;
-    remove(id: number): Promise<void>;
+    delete(id: number): Promise<void>;
 }

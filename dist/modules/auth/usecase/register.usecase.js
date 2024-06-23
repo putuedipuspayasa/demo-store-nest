@@ -13,21 +13,22 @@ exports.RegisterUsecase = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcryptjs");
 const user_credential_1 = require("../../../domain/constants/user-credential");
+const company_entity_1 = require("../../../domain/entity/company.entity");
 const user_credential_entity_1 = require("../../../domain/entity/user-credential.entity");
 const user_entity_1 = require("../../../domain/entity/user.entity");
 const jwt_config_1 = require("../../../infrastructure/jwt/jwt.config");
-const serial_number_generator_1 = require("../../../infrastructure/utils/serial_number/serial-number-generator");
 const storage_service_1 = require("../../../infrastructure/utils/storage/storage.service");
+const company_repository_1 = require("../../company/repository/company.repository");
 const user_credential_repository_1 = require("../../user/repository/user-credential.repository");
 const user_repository_1 = require("../../user/repository/user.repository");
 const typeorm_1 = require("typeorm");
-const ulid_1 = require("ulid");
 let RegisterUsecase = class RegisterUsecase {
-    constructor(userRepository, userCredentialRepository, dataSource, storageService) {
+    constructor(userRepository, userCredentialRepository, dataSource, storageService, companyRepository) {
         this.userRepository = userRepository;
         this.userCredentialRepository = userCredentialRepository;
         this.dataSource = dataSource;
         this.storageService = storageService;
+        this.companyRepository = companyRepository;
     }
     get userCounter() {
         return this.storageService.getCounter();
@@ -47,14 +48,20 @@ let RegisterUsecase = class RegisterUsecase {
         try {
             const hashedPassword = await bcrypt.hash(req.password, jwt_config_1.JwtConfig.SALT_ROUNDS);
             const user = queryRunner.manager.create(user_entity_1.User, {
-                uid: (0, serial_number_generator_1.generateSerialNumberWithTime)('USR', ++this.userCounter),
                 name: req.name,
+                username: email,
                 email: email,
                 phone: req.phone,
             });
+            if (req.create_company) {
+                const company = await queryRunner.manager.create(company_entity_1.Company, {
+                    name: req.name,
+                });
+                const storeCompany = await queryRunner.manager.save(company);
+                user.company_uid = storeCompany.uid;
+            }
             const storeUser = await queryRunner.manager.save(user);
             const userCred = queryRunner.manager.create(user_credential_entity_1.UserCredential, {
-                uid: (0, ulid_1.ulid)(),
                 user_uid: storeUser.uid,
                 type: user_credential_1.UserCredentialType.PASSWORD,
                 value: hashedPassword,
@@ -78,6 +85,7 @@ exports.RegisterUsecase = RegisterUsecase = __decorate([
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
         user_credential_repository_1.UserCredentialRepository,
         typeorm_1.DataSource,
-        storage_service_1.StorageService])
+        storage_service_1.StorageService,
+        company_repository_1.CompanyRepository])
 ], RegisterUsecase);
 //# sourceMappingURL=register.usecase.js.map

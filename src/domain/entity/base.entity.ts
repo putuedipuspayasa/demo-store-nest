@@ -1,26 +1,37 @@
 import {
-  PrimaryGeneratedColumn,
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { ulid } from 'ulid';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Index({ unique: true })
-  @Column()
+  @Column({ unique: true })
   uid: string;
 
+  @Index()
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  created_at: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @Index()
+  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  updated_at: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deleted_at: Date;
+
+  @BeforeInsert()
+  generateUlid() {
+    if (!this.uid || this.uid.trim() === '') {
+      this.uid = ulid();
+    }
+  }
 }

@@ -14,20 +14,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterController = void 0;
 const common_1 = require("@nestjs/common");
-const register_usecase_1 = require("../usecase/register.usecase");
-const register_dto_1 = require("../dto/register.dto");
 const response_formatter_1 = require("../../../infrastructure/utils/response_formatter/response-formatter");
+const register_dto_1 = require("../dto/register.dto");
+const register_usecase_1 = require("../usecase/register.usecase");
 let RegisterController = class RegisterController {
     constructor(registerUsecase) {
         this.registerUsecase = registerUsecase;
     }
-    async register(req) {
+    async register(req, res) {
         try {
             const login = await this.registerUsecase.register(req);
-            return (0, response_formatter_1.formatResponse)(login, 'Success');
+            return (0, response_formatter_1.formatResponse)(res, login, 'Success');
         }
         catch (err) {
-            throw (0, response_formatter_1.formatResponse)(null, err.message, common_1.HttpStatus.BAD_REQUEST);
+            return (0, response_formatter_1.formatResponse)(res, null, err.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
 };
@@ -35,8 +35,9 @@ exports.RegisterController = RegisterController;
 __decorate([
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [register_dto_1.RegisterDto]),
+    __metadata("design:paramtypes", [register_dto_1.RegisterDto, Object]),
     __metadata("design:returntype", Promise)
 ], RegisterController.prototype, "register", null);
 exports.RegisterController = RegisterController = __decorate([

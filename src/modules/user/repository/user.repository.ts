@@ -14,11 +14,7 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async findByFilter(filter: FilterUserDto): Promise<User> {
-    return this.filter(filter).getOne();
-  }
-
-  async findPaginate(req: FilterUserDto): Promise<Pagination<User>> {
+  async fetchPaginate(req: FilterUserDto): Promise<Pagination<User>> {
     if (req.page === undefined || req.page <= 0) {
       req.page = 1;
     }
@@ -55,6 +51,10 @@ export class UserRepository extends Repository<User> {
 
   filter(filter: FilterUserDto): SelectQueryBuilder<User> {
     const queryBuilder = this.createQueryBuilder('users');
+
+    if (filter.id) {
+      queryBuilder.andWhere('users.id = :id', { id: filter.id });
+    }
 
     if (filter.uid) {
       queryBuilder.andWhere('users.uid = :uid', { uid: filter.uid });

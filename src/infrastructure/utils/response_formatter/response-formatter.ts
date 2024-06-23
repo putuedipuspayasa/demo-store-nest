@@ -1,19 +1,39 @@
 import { HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
+// export interface ResponseFormat<T> {
+//   code: number;
+//   message: string;
+//   data: T | null;
+// }
+
+// export function formatResponse<T>(
+//   data: T,
+//   message: string,
+//   code: number = HttpStatus.OK,
+// ): ResponseFormat<T> {
+//   return {
+//     code,
+//     message,
+//     data,
+//   };
+// }
 
 export interface ResponseFormat<T> {
-  statusCode: number;
+  code: number;
   message: string;
   data: T | null;
+  errors?: string[];
 }
 
 export function formatResponse<T>(
+  res: Response,
   data: T,
   message: string,
-  statusCode: number = HttpStatus.OK,
+  code: number = HttpStatus.OK,
+  errors: string[] = [],
 ): ResponseFormat<T> {
-  return {
-    statusCode,
-    message,
-    data,
-  };
+  const response: ResponseFormat<T> = { code, message, data, errors };
+
+  res.status(code).json(response);
+  return response;
 }

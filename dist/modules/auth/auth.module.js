@@ -10,11 +10,13 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
+const company_entity_1 = require("../../domain/entity/company.entity");
 const user_credential_entity_1 = require("../../domain/entity/user-credential.entity");
 const user_entity_1 = require("../../domain/entity/user.entity");
 const jwt_config_1 = require("../../infrastructure/jwt/jwt.config");
 const file_system_storage_adapter_1 = require("../../infrastructure/utils/storage/file-system-storage.adapter");
 const storage_service_1 = require("../../infrastructure/utils/storage/storage.service");
+const company_repository_1 = require("../company/repository/company.repository");
 const user_credential_repository_1 = require("../user/repository/user-credential.repository");
 const user_repository_1 = require("../user/repository/user.repository");
 const login_controller_1 = require("./controller/login.controller");
@@ -27,7 +29,7 @@ exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_credential_entity_1.UserCredential]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_credential_entity_1.UserCredential, company_entity_1.Company]),
             jwt_1.JwtModule.register({
                 global: true,
                 secret: jwt_config_1.JwtConfig.SECRET_KEY,
@@ -38,6 +40,7 @@ exports.AuthModule = AuthModule = __decorate([
         providers: [
             user_repository_1.UserRepository,
             user_credential_repository_1.UserCredentialRepository,
+            company_repository_1.CompanyRepository,
             login_usecase_1.LoginUsecase,
             register_usecase_1.RegisterUsecase,
             {

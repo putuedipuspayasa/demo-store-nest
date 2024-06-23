@@ -1,8 +1,8 @@
+import { Injectable } from '@nestjs/common';
+import { UserCredentialType } from 'src/domain/constants/user-credential';
 import { UserCredential } from 'src/domain/entity/user-credential.entity';
 import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
 import { FilterUserCredentialDto } from '../dto/filter-user-credential.dto';
-import { UserCredentialType } from 'src/domain/constants/user-credential';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserCredentialRepository extends Repository<UserCredential> {
@@ -22,6 +22,10 @@ export class UserCredentialRepository extends Repository<UserCredential> {
 
   filter(filter: FilterUserCredentialDto): SelectQueryBuilder<UserCredential> {
     const queryBuilder = this.createQueryBuilder('user_credentials');
+
+    if (filter.id) {
+      queryBuilder.andWhere('user_credentials.id = :id', { id: filter.id });
+    }
 
     if (filter.uid) {
       queryBuilder.andWhere('user_credentials.uid = :uid', { uid: filter.uid });

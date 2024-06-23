@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserCredentialRepository = void 0;
+const common_1 = require("@nestjs/common");
+const user_credential_1 = require("../../../domain/constants/user-credential");
 const user_credential_entity_1 = require("../../../domain/entity/user-credential.entity");
 const typeorm_1 = require("typeorm");
-const user_credential_1 = require("../../../domain/constants/user-credential");
-const common_1 = require("@nestjs/common");
 let UserCredentialRepository = class UserCredentialRepository extends typeorm_1.Repository {
     constructor(dataSource) {
         super(user_credential_entity_1.UserCredential, dataSource.createEntityManager());
@@ -30,6 +30,9 @@ let UserCredentialRepository = class UserCredentialRepository extends typeorm_1.
     }
     filter(filter) {
         const queryBuilder = this.createQueryBuilder('user_credentials');
+        if (filter.id) {
+            queryBuilder.andWhere('user_credentials.id = :id', { id: filter.id });
+        }
         if (filter.uid) {
             queryBuilder.andWhere('user_credentials.uid = :uid', { uid: filter.uid });
         }

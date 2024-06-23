@@ -1,7 +1,8 @@
 export declare class BaseEntity {
     id: number;
     uid: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date;
+    created_at: Date;
+    updated_at: Date;
+    deleted_at: Date;
+    generateUlid(): void;
 }
