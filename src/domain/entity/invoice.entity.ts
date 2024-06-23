@@ -19,19 +19,19 @@ export class Invoice extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   due_date: Date;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   sub_total: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   discount_total: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   tax_total: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   grand_total: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   outstanding: number;
 
   @Column({ type: 'text', nullable: true })

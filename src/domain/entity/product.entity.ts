@@ -1,5 +1,6 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { ProductCategory } from './product-category.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -17,12 +18,12 @@ export class Product extends BaseEntity {
   name: string;
 
   @Column({ type: 'text', nullable: true })
-  description: number;
+  description: string;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   price: number;
 
-  @Column({ type: 'bigint', default: 0 })
+  @Column({ default: 0 })
   stock: number;
 
   @Column({ type: 'text', nullable: true })
@@ -33,4 +34,10 @@ export class Product extends BaseEntity {
 
   @Column({ type: 'text' })
   status: string;
+
+  @OneToMany(
+    () => ProductCategory,
+    (product_category) => product_category.product,
+  )
+  product_categories: ProductCategory[];
 }

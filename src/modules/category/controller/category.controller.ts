@@ -57,18 +57,22 @@ export class CategoryController {
     @Param('uid') uid: string,
     @Res() res: Response,
   ): Promise<ResponseFormat<any>> {
-    const user = await this.categoryUsecase.get(uid);
-    return formatResponse(res, user, 'Success');
+    const row = await this.categoryUsecase.get(uid);
+    return formatResponse(res, row, 'Success');
   }
 
   @Patch(':uid')
-  update(
+  async update(
     @Param('uid') uid: string,
     @Body() req: UpdateCategoryDto,
     @Res() res: Response,
   ) {
-    const update = this.categoryUsecase.update(uid, req);
-    return formatResponse(res, update, 'Success');
+    try {
+      const update = await this.categoryUsecase.update(uid, req);
+      return formatResponse(res, update, 'Success');
+    } catch (err: any) {
+      return formatResponse(res, null, err.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Delete(':uid')

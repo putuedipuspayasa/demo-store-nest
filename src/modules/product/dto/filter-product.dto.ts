@@ -14,4 +14,6 @@ export class FilterProductDto extends PaginationDto {
   status_list?: string[];
 
   status?: string;
+
+  cover?: string;
 }

@@ -21,7 +21,7 @@ class BaseEntity {
 }
 exports.BaseEntity = BaseEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('increment'),
+    (0, typeorm_1.PrimaryGeneratedColumn)('increment', { type: 'bigint' }),
     __metadata("design:type", Number)
 ], BaseEntity.prototype, "id", void 0);
 __decorate([
@@ -36,11 +36,12 @@ __decorate([
 ], BaseEntity.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
-    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', nullable: true }),
+    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at', nullable: true, default: null }),
     __metadata("design:type", Date)
 ], BaseEntity.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.DeleteDateColumn)({ name: 'deleted_at', nullable: true }),
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.DeleteDateColumn)({ name: 'deleted_at', nullable: true, default: null }),
     __metadata("design:type", Date)
 ], BaseEntity.prototype, "deleted_at", void 0);
 __decorate([

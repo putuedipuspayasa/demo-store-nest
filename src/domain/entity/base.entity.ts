@@ -10,7 +10,7 @@ import {
 import { ulid } from 'ulid';
 
 export class BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   id: number;
 
   @Index({ unique: true })
@@ -22,10 +22,11 @@ export class BaseEntity {
   created_at: Date;
 
   @Index()
-  @UpdateDateColumn({ name: 'updated_at', nullable: true })
+  @UpdateDateColumn({ name: 'updated_at', nullable: true, default: null })
   updated_at: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  @Index()
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true, default: null })
   deleted_at: Date;
 
   @BeforeInsert()

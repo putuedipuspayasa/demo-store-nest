@@ -16,7 +16,7 @@ export class Payment extends BaseEntity {
   payment_method_uid: string;
 
   @Index()
-  @Column({ type: 'numeric', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'numeric', default: 0 })
   amount: number;
 
   @Index()

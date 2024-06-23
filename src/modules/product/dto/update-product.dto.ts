@@ -1,13 +1,17 @@
 import {
   ArrayNotEmpty,
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsString,
 } from 'class-validator';
+import { ProductStatus } from 'src/domain/constants/product-status';
 
 export class UpdateProductDto {
   uid?: string;
+
+  slug?: string;
 
   @IsNotEmpty()
   company_uid: string;
@@ -33,5 +37,6 @@ export class UpdateProductDto {
   tags?: string;
 
   @IsNotEmpty()
+  @IsEnum(ProductStatus)
   status: string;
 }

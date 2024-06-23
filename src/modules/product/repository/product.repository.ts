@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  IPaginationOptions,
-  paginate,
-  Pagination,
-} from 'nestjs-typeorm-paginate';
+import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { Product } from 'src/domain/entity/product.entity';
 import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
 import { FilterProductDto } from '../dto/filter-product.dto';
@@ -33,10 +29,32 @@ export class ProductRepository extends Repository<Product> {
 
     const queryBuilder = this.filter(req);
     queryBuilder.orderBy(`products.${req.sortField}`, req.sortDirection);
+    // queryBuilder.relation('product_categories');
+    // Add join to product_categories table
+    // queryBuilder.leftJoinAndSelect('product_categories', 'product_categories');
 
-    const options: IPaginationOptions = {
+    // queryBuilder.leftJoinAndSelect('product_categories.category', 'category');
+
+    // queryBuilder.leftJoinAndSelect(
+    //   'products.product_categories',
+    //   ProductCategory,
+    //   'pc',
+    //   'pc.product_uid = products.uid', // Adjust this join condition
+    // );
+
+    // queryBuilder.leftJoinAndSelect('product_categories', 'category');
+
+    // queryBuilder.leftJoinAndMapOne(
+    //   'product_categories.category',
+    //   Category,
+    //   'cat',
+    //   'cat.uid = product_categories.category_uid', // Adjust this join condition
+    // );
+
+    const options = {
       limit: req.limit,
       page: req.page,
+      // relations: ['product_categories'],
     };
 
     return paginate<Product>(queryBuilder, options);
