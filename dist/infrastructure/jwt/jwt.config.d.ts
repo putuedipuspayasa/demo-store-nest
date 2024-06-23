@@ -1,6 +1,6 @@
 export declare const JwtConfig: {
-    SALT_ROUNDS: number;
-    SECRET_KEY: string;
-    EXPIRE_IN: number;
+    SALT_ROUNDS: any;
+    SECRET_KEY: any;
+    EXPIRE_IN: any;
     TOKEN_TYPE: string;
 };

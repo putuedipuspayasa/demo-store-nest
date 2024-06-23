@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginUsecase = void 0;
 const common_1 = require("@nestjs/common");
@@ -52,7 +53,6 @@ exports.LoginUsecase = LoginUsecase;
 exports.LoginUsecase = LoginUsecase = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        user_credential_repository_1.UserCredentialRepository,
-        jwt_1.JwtService])
+        user_credential_repository_1.UserCredentialRepository, typeof (_a = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _a : Object])
 ], LoginUsecase);
 //# sourceMappingURL=login.usecase.js.map
