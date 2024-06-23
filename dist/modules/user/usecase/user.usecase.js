@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserUsecase = void 0;
 const common_1 = require("@nestjs/common");
@@ -93,6 +92,8 @@ exports.UserUsecase = UserUsecase;
 exports.UserUsecase = UserUsecase = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        user_credential_repository_1.UserCredentialRepository, typeof (_a = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _a : Object, storage_service_1.StorageService])
+        user_credential_repository_1.UserCredentialRepository,
+        typeorm_1.DataSource,
+        storage_service_1.StorageService])
 ], UserUsecase);
 //# sourceMappingURL=user.usecase.js.map
